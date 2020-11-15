@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+"name": "contraband_camps",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "Washington City Jail", "Type": "Fugitive Slave Facility", "URL": "http:\/\/civilwardc.org\/data\/places\/view\/636" }, "geometry": { "type": "Point", "coordinates": [ -77.01663, 38.89781 ] } },
+{ "type": "Feature", "properties": { "Name": "Old Capitol Prison", "Type": "Fugitive Slave Facility", "URL": "http:\/\/civilwardc.org\/data\/places\/view\/448" }, "geometry": { "type": "Point", "coordinates": [ -77.00664, 38.8902 ] } },
+{ "type": "Feature", "properties": { "Name": "Duff Green's Row", "Type": "Fugitive Slave Facility", "URL": "http:\/\/civilwardc.org\/data\/places\/view\/654" }, "geometry": { "type": "Point", "coordinates": [ -77.00557, 38.89139 ] } },
+{ "type": "Feature", "properties": { "Name": "Camp Barker", "Type": "Fugitive Slave Facility", "URL": "http:\/\/civilwardc.org\/data\/places\/view\/655" }, "geometry": { "type": "Point", "coordinates": [ -77.02888, 38.91221 ] } },
+{ "type": "Feature", "properties": { "Name": "Barry's Farm", "Type": "Freedmen's Bureau", "URL": "http:\/\/civilwardc.org\/data\/places\/view\/656" }, "geometry": { "type": "Point", "coordinates": [ -76.99788, 38.86137 ] } },
+{ "type": "Feature", "properties": { "Name": "Freedmen's Village", "Type": "Freedmen's Village", "URL": "http:\/\/civilwardc.org\/data\/places\/view\/657" }, "geometry": { "type": "Point", "coordinates": [ -77.06722, 38.87012 ] } },
+{ "type": "Feature", "properties": { "Name": "Contraband Camp A", "Type": "Contraband Camp", "URL": null }, "geometry": { "type": "Point", "coordinates": [ -77.05722, 38.80734 ] } },
+{ "type": "Feature", "properties": { "Name": "Contraband Camp B", "Type": "Contraband Camp", "URL": null }, "geometry": { "type": "Point", "coordinates": [ -77.05551, 38.80668 ] } },
+{ "type": "Feature", "properties": { "Name": "Analostan Island", "Type": "Unknown", "URL": "http:\/\/civilwardc.org\/data\/places\/view\/661" }, "geometry": { "type": "Point", "coordinates": [ -77.06379, 38.89884 ] } }
+]
+}

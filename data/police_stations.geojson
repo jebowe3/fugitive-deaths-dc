@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+"name": "police_stations",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": 1, "Location": "in Uniontown" }, "geometry": { "type": "Point", "coordinates": [ -76.98574, 38.86509 ] } },
+{ "type": "Feature", "properties": { "Name": 2, "Location": "on 7th street road, near the first tollgate" }, "geometry": { "type": "Point", "coordinates": [ -77.02728, 38.96531 ] } },
+{ "type": "Feature", "properties": { "Name": 3, "Location": "2 station houses, one in Georgetown on High street, near Bridge, and one in Tennallytown" }, "geometry": { "type": "Point", "coordinates": [ -77.06292, 38.90729 ] } },
+{ "type": "Feature", "properties": { "Name": 3, "Location": "2 station houses, one in Georgetown on High street, near Bridge, and one in Tennallytown" }, "geometry": { "type": "Point", "coordinates": [ -77.07974, 38.9492 ] } },
+{ "type": "Feature", "properties": { "Name": 4, "Location": "on K, between 20th and 21st streets west" }, "geometry": { "type": "Point", "coordinates": [ -77.04775, 38.90292 ] } },
+{ "type": "Feature", "properties": { "Name": 6, "Location": "Central Guard-house, Louisiana avenue, between 9th and 10th west" }, "geometry": { "type": "Point", "coordinates": [ -77.0249, 38.89273 ] } },
+{ "type": "Feature", "properties": { "Name": 7, "Location": "in the basement of east wing of City Hall" }, "geometry": { "type": "Point", "coordinates": [ -77.01714, 38.89527 ] } },
+{ "type": "Feature", "properties": { "Name": 8, "Location": "corner of E south and 5th streets east" }, "geometry": { "type": "Point", "coordinates": [ -76.99923, 38.88342 ] } },
+{ "type": "Feature", "properties": { "Name": 10, "Location": "on 4th street west, between G and F streets south (island)" }, "geometry": { "type": "Point", "coordinates": [ -77.01727, 38.88182 ] } }
+]
+}
