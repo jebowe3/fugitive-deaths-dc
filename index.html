@@ -181,9 +181,10 @@
     const buildingsGov = d3.json('data/govt_buildings.geojson');
     const medicalCenters = d3.json('data/hospitals.geojson');
     const policeDepts = d3.json('data/police_stations.geojson');
+    const fugitiveDeaths = d3.json('data/prelim_mapping_mortality_dc.geojson');
 
     // use Promise to wait until data is all loaded
-    Promise.all([churchesBlack, churchesWhite, campsContraband, buildingsGov, medicalCenters, policeDepts]).then(drawMap);
+    Promise.all([churchesBlack, churchesWhite, campsContraband, buildingsGov, medicalCenters, policeDepts, fugitiveDeaths]).then(drawMap);
 
     // drawMap function is called when Promise is fulfilled and data is ready
     function drawMap(data) {
@@ -195,6 +196,7 @@
       const govBuildings = data[3];
       const hosps = data[4];
       const policeStas = data[5];
+      const fugDeaths = data[6];
 
       const blackChurches = L.geoJson(blChurches, {
 
@@ -316,7 +318,7 @@
             icon: L.ExtraMarkers.icon({
               icon: 'fas fa-landmark',
               prefix: 'fa',
-              markerColor: 'red',
+              markerColor: 'purple',
               iconColor: 'white'
             })
           })
@@ -418,6 +420,43 @@
 
       });
 
+      const fugDths = L.geoJson(fugDeaths, {
+
+        // pointToLayer
+        pointToLayer: function(feature, ll) {
+
+          return L.marker(ll, {
+            icon: L.ExtraMarkers.icon({
+              icon: 'far fa-notes-medical',
+              prefix: 'fa',
+              markerColor: 'red',
+              iconColor: 'white'
+            })
+          })
+
+        }, // end pointToLayer
+
+        // On each marker...
+        onEachFeature: function(feature, layer) {
+
+          // define the layer feature properties
+          var props = layer.feature.properties;
+
+          // bind info to the layer features using popups
+          layer.bindPopup("<b>" + props.Name_of_deceased + "</b><br>" + props.mm_dd_yy + "<br>" + props.COD + "<br>" + props.location_of_deceased, {
+            closeButton: false
+          });
+          layer.on('mouseover', function() { // On mouseover...
+            layer.openPopup(); // open the popup
+          });
+          layer.on('mouseout', function() { // On mouseout...
+            layer.closePopup(); // close the popup
+          });
+
+        } // end onEachFeature
+
+      });
+
       // Define overlays
       var overlays = {
         "Black Churches": blackChurches,
@@ -425,7 +464,8 @@
         "Fugitive Slave Camps": refugeeCamps,
         "Government Buildings": governmentBuildings,
         "Hospitals": hospitals,
-        "Police Stations": policeStations
+        "Police Stations": policeStations,
+        "Fugitive Burial Requests": fugDths,
       };
 
       // Add base layers
