@@ -127,6 +127,13 @@
       minZoom: 10,
       maxZoom: 16
     });
+    var base3 = L.tileLayer('./DC-diarrhea-deaths/{z}/{x}/{y}.png', {
+      tms: true,
+      opacity: 1.0,
+      attribution: "",
+      minZoom: 11,
+      maxZoom: 15
+    });
 
     // Empty
     var contemporary = L.tileLayer("", {
@@ -135,6 +142,7 @@
     });
 
     var basemaps = {
+      "Diarrhea Deaths, 1888-1892": base3,
       "Boschke 1861": base2,
       "Boschke 1857": base1,
       "Contemporary": contemporary,
