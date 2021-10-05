@@ -134,6 +134,20 @@
       minZoom: 11,
       maxZoom: 15
     });
+    var base4 = L.tileLayer('./alley-tiles-1858/{z}/{x}/{y}.png', {
+      tms: true,
+      opacity: 1.0,
+      attribution: "",
+      minZoom: 11,
+      maxZoom: 15
+    });
+    var base5 = L.tileLayer('./alley-tiles-1871/{z}/{x}/{y}.png', {
+      tms: true,
+      opacity: 1.0,
+      attribution: "",
+      minZoom: 11,
+      maxZoom: 15
+    });
 
     // Empty
     var contemporary = L.tileLayer("", {
@@ -142,10 +156,12 @@
     });
 
     var basemaps = {
-      "Diarrhea Deaths, 1888-1892": base3,
       "Boschke 1861": base2,
       "Boschke 1857": base1,
       "Contemporary": contemporary,
+      "Inhabited Alleys, 1858": base4,
+      "Inhabited Alleys, 1871": base5,
+      "Diarrhea Deaths, 1888-1892": base3,
     };
 
     // Title
