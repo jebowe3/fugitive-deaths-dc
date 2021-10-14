@@ -75,6 +75,10 @@
   <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
   <!-- for icon markers -->
   <script src="js/leaflet.extra-markers.min.js"></script>
+  <!-- turf js for geospatial analysis -->
+  <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+  <!-- for statistics, classifications -->
+  <script src='https://unpkg.com/simple-statistics@7.0.8/dist/simple-statistics.min.js'></script>
 
   <script>
     /* **** Leaflet **** */
@@ -444,6 +448,8 @@
 
       });
 
+      const dthCoords = [];
+
       const fugDths = L.geoJson(fugDeaths, {
 
         // pointToLayer
@@ -466,6 +472,10 @@
           // define the layer feature properties
           var props = layer.feature.properties;
 
+          // define the layer feature coordinates and push to the dthCoords array
+          var coords = layer.feature.geometry.coordinates;
+          dthCoords.push(coords);
+
           // bind info to the layer features using popups
           layer.bindPopup("<b>" + props.Name_of_deceased + "</b><br>" + props.mm_dd_yy + "<br>" + props.COD + "<br>" + props.location_of_deceased, {
             closeButton: false
@@ -481,6 +491,87 @@
 
       });
 
+      // run turf js on the coordinates of the burial requests
+      const deathPoints = turf.points(dthCoords);
+
+      // define the bounding box for the hex grid overlay
+      const bbox = [-77.09200,38.86100,-76.96000,38.93100];
+      // define the length of the hexagon side in miles
+      const cellSide = 0.15;
+      const options = {units: 'miles'};
+
+      // run turf js on the bounding box and feed it the cell side length to make the hex grid
+      const hexgrid = turf.hexGrid(bbox, cellSide, options);
+
+      // map the hexgrid features to count all the burial requests within each hexagon and return an array of these
+      const dthArray = hexgrid.features.map(function(feature) {
+        var searchWithin = turf.polygon(feature.geometry.coordinates);
+        var ptsWithin = turf.pointsWithinPolygon(deathPoints, searchWithin);
+        var totalDths = ptsWithin.features.length;
+        return totalDths;
+      });
+
+      // use simple statistics to create five ranges for the totalDths array based on ckmeans
+      var dthStops = ss.ckmeans(dthArray, 5);
+
+      // define a function that applies a color to each hexagon based on the total burial requests in each
+      function getHexColor(d) {
+        return d >= ss.min(dthStops[4]) ? '#bd0026' :
+          d >= ss.min(dthStops[3]) ? '#f03b20' :
+          d >= ss.min(dthStops[2]) ? '#fd8d3c' :
+          d >= ss.min(dthStops[1]) ? '#fecc5c' :
+          d > ss.min(dthStops[0]) ? '#ffffb2' :
+          'rgba(0,0,0,0.0)';
+      };
+
+      function getStroke(d) {
+        return d > ss.min(dthStops[0]) ? 1 :
+        0;
+      };
+
+      const hexLayer = L.geoJson(hexgrid, {
+        onEachFeature: function(feature, layer) {
+
+          // use turf js to count the total number of burial requests in each hexagon
+          var srchWithin = turf.polygon(layer.feature.geometry.coordinates);
+          var ptsWithin = turf.pointsWithinPolygon(deathPoints, srchWithin);
+          var totDths = ptsWithin.features.length;
+
+          // bind a tooltip to each hexagon with the total number of burial requests
+          layer.bindTooltip('Total Burial Requests: ' + totDths);
+
+          // set the style
+          layer.setStyle({
+            stroke: getStroke(totDths),
+            color: "grey",
+            weight: 1,
+            fillColor : getHexColor(totDths), // color each based on total number of burial requests
+            fillOpacity : 0.5
+          });
+
+          // change layer style on mouseover
+          layer.on('mouseover', function(e) {
+            layer.setStyle({
+              weight: 2,
+              color: "grey",
+              opacity: 0.75,
+              fillOpacity: 0.75,
+            }).bringToFront();
+          });
+          // reset style on mouseout
+          layer.on("mouseout", function(e) {
+            layer.setStyle({
+              stroke: getStroke(totDths),
+              color: "grey",
+              weight: 1,
+              fillColor : getHexColor(totDths), // color each based on total number of burial requests
+              fillOpacity : 0.5
+            });
+          });
+          
+        }
+      });
+
       // Define overlays
       var overlays = {
         "Black Churches": blackChurches,
@@ -490,6 +581,7 @@
         "Hospitals": hospitals,
         "Police Stations": policeStations,
         "Fugitive Burial Requests": fugDths,
+        "Fugitive Burial Requests by 0.15 Mile Hexagon": hexLayer,
       };
 
       // Add base layers
