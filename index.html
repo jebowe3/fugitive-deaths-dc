@@ -505,9 +505,9 @@
 
       // map the hexgrid features to count all the burial requests within each hexagon and return an array of these
       const dthArray = hexgrid.features.map(function(feature) {
-        var searchWithin = turf.polygon(feature.geometry.coordinates);
-        var ptsWithin = turf.pointsWithinPolygon(deathPoints, searchWithin);
-        var totalDths = ptsWithin.features.length;
+        const searchWithin = turf.polygon(feature.geometry.coordinates);
+        const ptsWithin = turf.pointsWithinPolygon(deathPoints, searchWithin);
+        const totalDths = ptsWithin.features.length;
         return totalDths;
       });
 
@@ -520,7 +520,7 @@
           d >= ss.min(dthStops[3]) ? '#f03b20' :
           d >= ss.min(dthStops[2]) ? '#fd8d3c' :
           d >= ss.min(dthStops[1]) ? '#fecc5c' :
-          d > ss.min(dthStops[0]) ? '#ffffb2' :
+          d >= ss.min(dthStops[0]) ? '#ffffb2' :
           'rgba(0,0,0,0.0)';
       };
 
@@ -533,16 +533,17 @@
         onEachFeature: function(feature, layer) {
 
           // use turf js to count the total number of burial requests in each hexagon
-          var srchWithin = turf.polygon(layer.feature.geometry.coordinates);
-          var ptsWithin = turf.pointsWithinPolygon(deathPoints, srchWithin);
-          var totDths = ptsWithin.features.length;
+          const srchWithin = turf.polygon(layer.feature.geometry.coordinates);
+          const ptsWithin = turf.pointsWithinPolygon(deathPoints, srchWithin);
+          const totDths = ptsWithin.features.length;
 
           // bind a tooltip to each hexagon with the total number of burial requests
           layer.bindTooltip('Total Burial Requests: ' + totDths);
 
           // set the style
           layer.setStyle({
-            stroke: getStroke(totDths),
+            //stroke: getStroke(totDths),
+            stroke: 1,
             color: "grey",
             weight: 1,
             fillColor : getHexColor(totDths), // color each based on total number of burial requests
@@ -561,14 +562,15 @@
           // reset style on mouseout
           layer.on("mouseout", function(e) {
             layer.setStyle({
-              stroke: getStroke(totDths),
+              //stroke: getStroke(totDths),
+              stroke: 1,
               color: "grey",
               weight: 1,
               fillColor : getHexColor(totDths), // color each based on total number of burial requests
               fillOpacity : 0.5
             });
           });
-          
+
         }
       });
 
